@@ -1,0 +1,9 @@
+[package]
+name = "rfetch"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.48.0", features = ["full"]}
+reqwest = "0"
+clap = { version = "4.5.53", features = ["default", "derive"] }
