@@ -2,6 +2,7 @@ use clap::Parser;
 use serde_json::Value;
 
 mod flags;
+mod helpers;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -26,6 +27,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .send()
         .await?;
 
-    println!("{:?}", response); // Better formatted printing coming soon.
+    helpers::print_response(response).await?;
     Ok(())
 }
