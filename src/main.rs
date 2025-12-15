@@ -4,7 +4,7 @@ use serde_json::Value;
 mod flags;
 mod helpers;
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let flags = flags::Flags::parse();
     let client = reqwest::Client::new();

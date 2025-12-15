@@ -14,14 +14,14 @@ pub struct Flags {
 
     #[arg(short, long, default_value = "false")]
     pub json: bool,
-    
+
     #[arg(long, default_value = "false")]
     pub debug: bool
 }
 
 impl Flags {
     pub fn extract_method(&self) -> Result<reqwest::Method, String> {
-        match self.method.to_lowercase().as_str() {
+        match &*self.method.to_lowercase() {
             "post" => Ok(reqwest::Method::POST),
             "get" => Ok(reqwest::Method::GET),
             "put" => Ok(reqwest::Method::PUT),
