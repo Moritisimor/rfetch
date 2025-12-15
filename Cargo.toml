@@ -7,3 +7,4 @@ edition = "2024"
 tokio = { version = "1.48.0", features = ["full"]}
 reqwest = "0"
 clap = { version = "4.5.53", features = ["default", "derive"] }
+serde = "1"

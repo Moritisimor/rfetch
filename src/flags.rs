@@ -12,11 +12,8 @@ pub struct Flags {
     #[arg(short, long, default_value = "")]
     pub body: String,
 
-    #[arg(long, default_value = "false")]
-    pub json: bool,
-
     #[arg(short, long, default_value = "false")]
-    pub verbose: bool
+    pub json: bool,
 }
 
 impl Flags {
@@ -32,12 +29,6 @@ impl Flags {
             "connect" => Ok(reqwest::Method::CONNECT),
             "patch" => Ok(reqwest::Method::PATCH),
             _ => Err(format!("Invalid method: {}", self.method))
-        }
-    }
-    
-    pub fn verbose_print(&self, p: impl std::fmt::Display) {
-        if self.verbose {
-            println!("{}", p);
         }
     }
 }
