@@ -27,6 +27,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .send()
         .await?;
 
-    helpers::print_response(response).await?;
+    helpers::print_response(response, flags.debug).await;
     Ok(())
 }

@@ -1,4 +1,9 @@
-pub async fn print_response(r: reqwest::Response) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn print_response(r: reqwest::Response, debug: bool) {
+    if debug {
+        println!("{:#?}", r);
+        return
+    }
+    
     println!("Status: {}", r.status());
     println!("Headers:");
     for (k, v) in r.headers() {
@@ -19,6 +24,4 @@ pub async fn print_response(r: reqwest::Response) -> Result<(), Box<dyn std::err
             }
         }
     }
-
-    Ok(())
 }

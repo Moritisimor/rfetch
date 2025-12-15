@@ -14,6 +14,9 @@ pub struct Flags {
 
     #[arg(short, long, default_value = "false")]
     pub json: bool,
+    
+    #[arg(long, default_value = "false")]
+    pub debug: bool
 }
 
 impl Flags {
