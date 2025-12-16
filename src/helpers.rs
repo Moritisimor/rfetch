@@ -8,7 +8,7 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
     }
     
     println!("{}: {}", "Status".green().bold(), r.status().magenta());
-    println!("{}:", "headers".green().bold());
+    println!("{}:", "Headers".green().bold());
     for (k, v) in r.headers() {
         match v.to_str() {
             Ok(s) => println!("{}: {}", k.blue(), s.cyan()),
