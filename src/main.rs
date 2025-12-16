@@ -42,7 +42,10 @@ async fn main() -> anyhow::Result<()> {
         .send()
         .await {
         Ok(r) => r,
-        Err(e) => bail!("Failed to send request: {}", e)
+        Err(e) => {
+            if e.is_builder() { bail!("invalid URL Scheme!") }
+            bail!("{e}")
+        }
     };
 
     helpers::print_response(response, flags.debug).await;
