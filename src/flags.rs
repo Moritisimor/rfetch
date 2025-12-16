@@ -1,3 +1,4 @@
+use anyhow::Error;
 use clap::Parser;
 
 #[derive(Parser)]
@@ -23,7 +24,7 @@ pub struct Flags {
 }
 
 impl Flags {
-    pub fn extract_method(&self) -> Result<reqwest::Method, String> {
+    pub fn extract_method(&self) -> Result<reqwest::Method, Error> {
         match &*self.method.to_lowercase() {
             "post" => Ok(reqwest::Method::POST),
             "get" => Ok(reqwest::Method::GET),
@@ -34,7 +35,7 @@ impl Flags {
             "trace" => Ok(reqwest::Method::TRACE),
             "connect" => Ok(reqwest::Method::CONNECT),
             "patch" => Ok(reqwest::Method::PATCH),
-            _ => Err(format!("Invalid method: {}", self.method))
+            _ => anyhow::bail!("Invalid method.")
         }
     }
 }

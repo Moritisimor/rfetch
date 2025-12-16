@@ -1,3 +1,4 @@
+use anyhow::bail;
 use clap::Parser;
 use serde_json::Value;
 
@@ -5,7 +6,7 @@ mod flags;
 mod helpers;
 
 #[tokio::main(flavor = "current_thread")]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> anyhow::Result<()> {
     let flags = flags::Flags::parse();
     let client = reqwest::Client::new();
 
@@ -23,7 +24,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         if header.is_empty() { continue }
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
-            None => return Err("Error while parsing headers.".into())
+            None => bail!("Invalid header format (expected 'key: value').")
         };
 
         headers.insert(
@@ -32,12 +33,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    let response = client
+    let response = match client
         .request(flags.extract_method()?, &flags.url)
         .body(flags.body.clone())
         .headers(headers)
         .send()
-        .await?;
+        .await {
+        Ok(r) => r,
+        Err(e) => bail!("Failed to send request: {}", e)
+    };
 
     helpers::print_response(response, flags.debug).await;
     Ok(())
