@@ -12,7 +12,9 @@ async fn main() -> anyhow::Result<()> {
 
     let mut headers = reqwest::header::HeaderMap::new();
     if flags.json {
-        serde_json::from_str::<Value>(&flags.body)?;
+        if let Err(e) = serde_json::from_str::<Value>(&flags.body) {
+            bail!("JSON-Parse Error: {}", e)
+        };
 
         headers.insert(
             reqwest::header::CONTENT_TYPE,
