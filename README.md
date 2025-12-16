@@ -2,17 +2,17 @@
 CLI HTTP Client written in Rust.
 
 ## What is this project about?
-RFetch is a simple but ergonomic CLI-Based HTTP Client. Functionally it is similar to curl but with more understandable flag arguments.
+RFetch is a simple but ergonomic CLI-Based HTTP Client. Functionally, it is similar to curl but with more understandable flag arguments.
 
 ## Example
 ```bash
-rfetch -u http://localhost:8080/hello -j -b '{"content": "Hello Server!"}' -m POST --head mycustomheader:myvalue
+rfetch -u http://localhost:8080/hello -j -b '{"content": "Hello Server!"}' -m POST -H mycustomheader:myvalue
 ```
 
 ### Flags:
-| ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```--head``` |
-| -------- | -------- | -------- | -------- | ------------ |
-|   URL    |   JSON   |   Body   |  Method  |    Header    |
+| ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```-H``` |
+|----------|----------|----------|----------|----------|
+| URL      | JSON     | Body     | Method   | Header   |
 
 ## Compilation
 First, clone this repository

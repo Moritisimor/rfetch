@@ -12,8 +12,8 @@ pub struct Flags {
     #[arg(short, long, default_value = "")]
     pub body: String,
     
-    #[arg(long, default_value = "")]
-    pub head: Vec<String>,
+    #[arg(short = 'H', long = "header", default_value = "")]
+    pub headers: Vec<String>,
 
     #[arg(short, long, default_value = "false")]
     pub json: bool,

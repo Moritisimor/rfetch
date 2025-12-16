@@ -19,7 +19,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    for header in &flags.head {
+    for header in &flags.headers {
         if header.is_empty() { continue }
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
