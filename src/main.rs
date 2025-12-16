@@ -20,6 +20,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     for header in &flags.head {
+        if header.is_empty() { continue }
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
             None => return Err("Error while parsing headers.".into())
