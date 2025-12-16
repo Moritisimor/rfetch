@@ -45,7 +45,7 @@ async fn main() -> anyhow::Result<()> {
         Ok(r) => r,
         Err(e) => {
             if e.is_builder() { bail!("Invalid URL Scheme!".red()) }
-            bail!("{}", "{e}".red())
+            bail!("{}", e.red())
         }
     };
 
