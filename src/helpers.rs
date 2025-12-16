@@ -1,3 +1,5 @@
+use owo_colors::OwoColorize;
+
 pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyhow::Result<()> {
     if dbg {
         println!("{:#?}", r);
@@ -5,21 +7,21 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
         return Ok(())
     }
     
-    println!("Status: {}", r.status());
-    println!("Headers:");
+    println!("{}: {}", "Status".green().bold(), r.status().magenta());
+    println!("{}:", "headers".green().bold());
     for (k, v) in r.headers() {
         match v.to_str() {
-            Ok(s) => println!("{k}: {s}"),
+            Ok(s) => println!("{}: {}", k.blue(), s.cyan()),
             Err(_) => continue
         }
     }
 
-    println!("\nBody:");
+    println!("\n{}", "Body:".green().bold());
     match r.text().await {
-        Err(_) => anyhow::bail!("Error while reading body."),
+        Err(_) => anyhow::bail!("Error while reading body.".red()),
         Ok(b) => {
             if b == "null" || b == "" {
-                println!("<Empty Body>");
+                println!("{}", "[ Empty Body ]".yellow());
             } else {
                 println!("{b}");
                 write_output_to_file(&b, o)?;
@@ -33,7 +35,7 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
 fn write_output_to_file(text: &String, path: String) -> anyhow::Result<()> {
     if path.is_empty() || text.is_empty() { return Ok(()) }
     if let Err(e) = std::fs::write(path, text) {
-        anyhow::bail!("Error while writing to file: {}", e)
+        anyhow::bail!("{} {}", "Error while writing to file:".red(), e.red())
     };
 
     Ok(())

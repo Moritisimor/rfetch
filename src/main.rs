@@ -1,5 +1,6 @@
 use anyhow::bail;
 use clap::Parser;
+use owo_colors::OwoColorize;
 use serde_json::Value;
 
 mod flags;
@@ -13,7 +14,7 @@ async fn main() -> anyhow::Result<()> {
     let mut headers = reqwest::header::HeaderMap::new();
     if flags.json {
         if let Err(e) = serde_json::from_str::<Value>(&flags.body) {
-            bail!("JSON-Parse Error: {}", e)
+            bail!("{} {}", "JSON-Parse Error:".red(), e.red())
         };
 
         headers.insert(
@@ -26,7 +27,7 @@ async fn main() -> anyhow::Result<()> {
         if header.is_empty() { continue }
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
-            None => bail!("Invalid header format (expected 'key: value').")
+            None => bail!("Invalid header format (expected 'key: value').".red())
         };
 
         headers.insert(
@@ -43,8 +44,8 @@ async fn main() -> anyhow::Result<()> {
         .await {
         Ok(r) => r,
         Err(e) => {
-            if e.is_builder() { bail!("invalid URL Scheme!") }
-            bail!("{e}")
+            if e.is_builder() { bail!("Invalid URL Scheme!".red()) }
+            bail!("{}", "{e}".red())
         }
     };
 
