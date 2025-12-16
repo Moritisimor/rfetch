@@ -13,9 +13,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     if flags.json {
         serde_json::from_str::<Value>(&flags.body)?;
 
-        headers
-            .insert(reqwest::header::CONTENT_TYPE,
-            reqwest::header::HeaderValue::from_static("application/json"));
+        headers.insert(
+            reqwest::header::CONTENT_TYPE,
+            reqwest::header::HeaderValue::from_static("application/json")
+        );
+    }
+
+    for header in &flags.head {
+        let (k, v) = match header.split_once(':') {
+            Some(kv) => kv,
+            None => return Err("Error while parsing headers.".into())
+        };
+
+        headers.insert(
+            reqwest::header::HeaderName::from_bytes(k.as_bytes())?,
+            reqwest::header::HeaderValue::from_bytes(v.as_bytes())?
+        );
     }
 
     let response = client
