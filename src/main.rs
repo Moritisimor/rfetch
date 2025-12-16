@@ -27,7 +27,7 @@ async fn main() -> anyhow::Result<()> {
         if header.is_empty() { continue }
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
-            None => bail!("Invalid header format (expected 'key: value').".red())
+            None => bail!("Invalid header format (expected 'key:value').".red())
         };
 
         headers.insert(
@@ -44,6 +44,7 @@ async fn main() -> anyhow::Result<()> {
         .await {
         Ok(r) => r,
         Err(e) => {
+            if flags.debug { println!("{:#?}", e) }
             if e.is_builder() { bail!("Invalid URL Scheme!".red()) }
             bail!("{}", e.red())
         }
