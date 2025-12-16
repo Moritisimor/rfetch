@@ -12,6 +12,9 @@ pub struct Flags {
 
     #[arg(short, long, default_value = "")]
     pub body: String,
+
+    #[arg(short = 'o', long = "output", default_value = "")]
+    pub output: String,
     
     #[arg(short = 'H', long = "header", default_value = "")]
     pub headers: Vec<String>,

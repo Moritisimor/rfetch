@@ -48,6 +48,5 @@ async fn main() -> anyhow::Result<()> {
         }
     };
 
-    helpers::print_response(response, flags.debug).await;
-    Ok(())
+    helpers::handle_response(response, flags.debug, flags.output).await
 }
