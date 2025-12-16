@@ -11,9 +11,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut headers = reqwest::header::HeaderMap::new();
     if flags.json {
-        if let Err(e) = serde_json::from_str::<Value>(&flags.body) {
-            return Err(e.into()); // Check if the supplied body is valid JSON.
-        }
+        serde_json::from_str::<Value>(&flags.body)?;
 
         headers
             .insert(reqwest::header::CONTENT_TYPE,
