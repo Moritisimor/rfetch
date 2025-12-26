@@ -19,20 +19,23 @@ async fn main() -> anyhow::Result<()> {
 
         headers.insert(
             reqwest::header::CONTENT_TYPE,
-            reqwest::header::HeaderValue::from_static("application/json")
+            reqwest::header::HeaderValue::from_static("application/json"),
         );
     }
 
     for header in &flags.headers {
-        if header.is_empty() { continue }
+        if header.is_empty() {
+            continue;
+        }
+        
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
-            None => bail!("Invalid header format (expected 'key:value').".red())
+            None => bail!("Invalid header format (expected 'key:value').".red()),
         };
 
         headers.insert(
             reqwest::header::HeaderName::from_bytes(k.as_bytes())?,
-            reqwest::header::HeaderValue::from_bytes(v.as_bytes())?
+            reqwest::header::HeaderValue::from_bytes(v.as_bytes())?,
         );
     }
 
@@ -41,11 +44,16 @@ async fn main() -> anyhow::Result<()> {
         .body(flags.body.clone())
         .headers(headers)
         .send()
-        .await {
+        .await
+    {
         Ok(r) => r,
         Err(e) => {
-            if flags.debug { println!("{:#?}", e) }
-            if e.is_builder() { bail!("Invalid URL Scheme!".red()) }
+            if flags.debug {
+                println!("{:#?}", e)
+            }
+            if e.is_builder() {
+                bail!("Invalid URL Scheme!".red())
+            }
             bail!("{}", e.red())
         }
     };

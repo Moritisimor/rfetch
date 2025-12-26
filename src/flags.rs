@@ -15,7 +15,7 @@ pub struct Flags {
 
     #[arg(short = 'o', long = "output", default_value = "")]
     pub output: String,
-    
+
     #[arg(short = 'H', long = "header", default_value = "")]
     pub headers: Vec<String>,
 
@@ -23,7 +23,7 @@ pub struct Flags {
     pub json: bool,
 
     #[arg(long, default_value = "false")]
-    pub debug: bool
+    pub debug: bool,
 }
 
 impl Flags {
@@ -38,7 +38,7 @@ impl Flags {
             "trace" => Ok(reqwest::Method::TRACE),
             "connect" => Ok(reqwest::Method::CONNECT),
             "patch" => Ok(reqwest::Method::PATCH),
-            _ => anyhow::bail!("Invalid method.")
+            _ => anyhow::bail!("Invalid method."),
         }
     }
 }
