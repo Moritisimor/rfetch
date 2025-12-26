@@ -2,17 +2,38 @@
 CLI HTTP Client written in Rust.
 
 ## What is this project about?
-RFetch is a simple but ergonomic CLI-Based HTTP Client. Functionally, it is similar to curl but with more understandable flag arguments.
+RFetch is a simple but ergonomic CLI-Based HTTP Client. Functionally, it is similar to curl but with more understandable flag arguments and prettier output.
 
-## Example
+## Examples
+To send a simple GET Request without a body:
 ```bash
-rfetch -u http://localhost:8080/hello -j -b '{"content": "Hello Server!"}' -m POST -H mycustomheader:myvalue
+rfetch -u http://localhost:8080/
 ```
 
-### Flags:
-| ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```-H``` |
-|----------|----------|----------|----------|----------|
-| URL      | JSON     | Body     | Method   | Header   |
+To send a POST request with a JSON body: 
+```bash
+rfetch -u http://localhost:8080/ -m POST -j -b '{"mykey": "MyValue"}'
+```
+
+To send a PUT request with headers:
+```bash
+rfetch -u http://localhost:8080/ -m PUT -H myheader:myvalue -H myotherheader:myothervalue
+```
+
+## Output
+### Successful GET Request
+![alt text](screenshots/Success.png)
+
+### Error response from server
+![alt text](screenshots/NotFound.png)
+
+### Error while sending request
+![alt text](screenshots/Error.png)
+
+## Flags:
+| ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```-H``` | ```-o``` | ```--debug``` | 
+|----------|----------|----------|----------|----------|----------|---------------|
+| URL      | JSON     | Body     | Method   | Header   | Output   | Debug/Verbose |
 
 ## Compilation
 First, clone this repository
