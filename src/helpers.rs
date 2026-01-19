@@ -3,7 +3,7 @@ use owo_colors::OwoColorize;
 pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyhow::Result<()> {
     if dbg {
         println!("{:#?}", r);
-        write_output_to_file(&r.text().await?, o)?;
+        write_output_to_file(&r.text().await?, &o)?;
         return Ok(());
     }
 
@@ -22,9 +22,11 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
         Ok(b) => {
             if b == "null" || b == "" {
                 println!("{}", "[ Empty Body ]".yellow());
+            } else if o.trim() != "" {
+                write_output_to_file(&b, &o)?;
+                println!("{} '{}'", "Wrote body to".cyan(), &o.green())
             } else {
                 println!("{b}");
-                write_output_to_file(&b, o)?;
             }
         }
     };
@@ -32,7 +34,7 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
     Ok(())
 }
 
-fn write_output_to_file(text: &String, path: String) -> anyhow::Result<()> {
+fn write_output_to_file(text: &String, path: &String) -> anyhow::Result<()> {
     if path.is_empty() || text.is_empty() {
         return Ok(());
     }

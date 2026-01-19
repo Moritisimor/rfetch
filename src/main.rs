@@ -27,7 +27,7 @@ async fn main() -> anyhow::Result<()> {
         if header.is_empty() {
             continue;
         }
-        
+
         let (k, v) = match header.split_once(':') {
             Some(kv) => kv,
             None => bail!("Invalid header format (expected 'key:value').".red()),
