@@ -1,7 +1,7 @@
 use anyhow::Error;
 use clap::Parser;
 
-#[derive(Parser)]
+#[derive(Parser, Clone)]
 #[command(version, about, long_about = None)]
 pub struct Flags {
     #[arg(short, long)]
@@ -10,13 +10,13 @@ pub struct Flags {
     #[arg(short, long, default_value = "GET")]
     pub method: String,
 
-    #[arg(short, long, default_value = "")]
-    pub body: String,
+    #[arg(short, long)]
+    pub body: Option<String>,
 
-    #[arg(short = 'o', long = "output", default_value = "")]
-    pub output: String,
+    #[arg(short = 'o', long = "output")]
+    pub output: Option<String>,
 
-    #[arg(short = 'H', long = "header", default_value = "")]
+    #[arg(short = 'H', long = "header")]
     pub headers: Vec<String>,
 
     #[arg(short, long, default_value = "false")]

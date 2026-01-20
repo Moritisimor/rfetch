@@ -13,7 +13,12 @@ async fn main() -> anyhow::Result<()> {
 
     let mut headers = reqwest::header::HeaderMap::new();
     if flags.json {
-        if let Err(e) = serde_json::from_str::<Value>(&flags.body) {
+        let b = match &flags.body {
+            Some(s) => s,
+            None => anyhow::bail!("Using the JSON feature requires a body to be set!"),
+        };
+
+        if let Err(e) = serde_json::from_str::<Value>(b) {
             bail!("{} {}", "JSON-Parse Error:".red(), e.red())
         };
 
@@ -41,7 +46,7 @@ async fn main() -> anyhow::Result<()> {
 
     let response = match client
         .request(flags.extract_method()?, &flags.url)
-        .body(flags.body.clone())
+        .body(flags.clone().body.unwrap_or(String::new()))
         .headers(headers)
         .send()
         .await
@@ -58,5 +63,5 @@ async fn main() -> anyhow::Result<()> {
         }
     };
 
-    helpers::handle_response(response, flags.debug, flags.output).await
+    helpers::handle_response(response, &flags).await
 }

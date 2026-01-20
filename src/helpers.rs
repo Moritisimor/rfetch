@@ -1,9 +1,10 @@
 use owo_colors::OwoColorize;
 
-pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyhow::Result<()> {
-    if dbg {
+use crate::flags::Flags;
+
+pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<()> {
+    if f.debug {
         println!("{:#?}", r);
-        write_output_to_file(&r.bytes().await?, &o)?;
         return Ok(());
     }
 
@@ -17,16 +18,16 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
     }
 
     println!("\n{}", "Body:".green().bold());
-    if o != "" {
+    if let Some(o) = &f.output {
         match r.bytes().await {
             Err(e) => anyhow::bail!("{} {}", "Error while reading body:".red(), e.red()),
-            Ok(b) => { 
-                write_output_to_file(&b, &o)?;
-                println!("{} '{}'", "Wrote body to:".cyan(), &o.purple())
+            Ok(b) => {
+                write_output_to_file(&b, o)?;
+                println!("{} '{}'", "Wrote body to:".cyan(), o.purple())
             }
         }
 
-        return Ok(())
+        return Ok(());
     }
 
     match r.text().await {
@@ -44,9 +45,6 @@ pub async fn handle_response(r: reqwest::Response, dbg: bool, o: String) -> anyh
 }
 
 fn write_output_to_file(text: &[u8], path: &String) -> anyhow::Result<()> {
-    if path.is_empty() {
-        return Ok(());
-    }
     if let Err(e) = std::fs::write(path, text) {
         anyhow::bail!("{} {}", "Error while writing to file:".red(), e.red())
     };
