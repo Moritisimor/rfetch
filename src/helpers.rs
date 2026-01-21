@@ -1,6 +1,45 @@
+use anyhow::bail;
 use owo_colors::OwoColorize;
+use serde_json::Value;
 
 use crate::flags::Flags;
+
+pub async fn make_headers(f: &Flags) -> anyhow::Result<reqwest::header::HeaderMap> {
+    let mut headers = reqwest::header::HeaderMap::new();
+    if f.json {
+        let b = match &f.body {
+            Some(s) => s,
+            None => anyhow::bail!("Using the JSON feature requires a body to be set!"),
+        };
+
+        if let Err(e) = serde_json::from_str::<Value>(b) {
+            bail!("{} {}", "JSON-Parse Error:".red(), e.red())
+        };
+
+        headers.insert(
+            reqwest::header::CONTENT_TYPE,
+            reqwest::header::HeaderValue::from_static("application/json"),
+        );
+    }
+
+    for header in &f.headers {
+        if header.is_empty() {
+            continue;
+        }
+
+        let (k, v) = match header.split_once(':') {
+            Some(kv) => kv,
+            None => bail!("Invalid header format (expected 'key:value').".red()),
+        };
+
+        headers.insert(
+            reqwest::header::HeaderName::from_bytes(k.as_bytes())?,
+            reqwest::header::HeaderValue::from_bytes(v.as_bytes())?,
+        );
+    }
+
+    Ok(headers)
+}
 
 pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<()> {
     if f.debug {
@@ -22,7 +61,7 @@ pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<
         let b = r.bytes().await?;
         write_output_to_file(&b, o)?;
         println!("{} '{}'", "Wrote body to:".cyan(), o.purple());
-        
+
         return Ok(());
     }
 
