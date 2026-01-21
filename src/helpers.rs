@@ -19,27 +19,18 @@ pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<
 
     println!("\n{}", "Body:".green().bold());
     if let Some(o) = &f.output {
-        match r.bytes().await {
-            Err(e) => anyhow::bail!("{} {}", "Error while reading body:".red(), e.red()),
-            Ok(b) => {
-                write_output_to_file(&b, o)?;
-                println!("{} '{}'", "Wrote body to:".cyan(), o.purple())
-            }
-        }
-
+        let b = r.bytes().await?;
+        write_output_to_file(&b, o)?;
+        println!("{} '{}'", "Wrote body to:".cyan(), o.purple());
+        
         return Ok(());
     }
 
-    match r.text().await {
-        Err(_) => anyhow::bail!("Error while reading body.".red()),
-        Ok(b) => {
-            if b == "null" || b == "" {
-                println!("{}", "[ Empty Body ]".yellow());
-            } else {
-                println!("{b}")
-            }
-        }
-    };
+    let b = r.text().await?;
+    if b == "null" || b == "" {
+        println!("{}", "[ Empty Body ]".yellow());
+    }
+    println!("{b}");
 
     Ok(())
 }
