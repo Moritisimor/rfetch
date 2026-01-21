@@ -11,14 +11,14 @@ async fn main() -> anyhow::Result<()> {
     let client = reqwest::Client::new();
     let headers = helpers::make_headers(&flags).await?;
 
-    let response = match client
+    match client
         .request(flags.extract_method()?, &flags.url)
         .body(flags.clone().body.unwrap_or(String::new()))
         .headers(headers)
         .send()
         .await
     {
-        Ok(r) => r,
+        Ok(r) => helpers::handle_response(r, &flags).await,
         Err(e) => {
             if flags.debug {
                 println!("{:#?}", e)
@@ -28,7 +28,5 @@ async fn main() -> anyhow::Result<()> {
             }
             bail!("{}", e.red())
         }
-    };
-
-    helpers::handle_response(response, &flags).await
+    }
 }
