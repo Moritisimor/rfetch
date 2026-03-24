@@ -1,6 +1,7 @@
 use anyhow::bail;
 use clap::Parser;
 use owo_colors::OwoColorize;
+use std::time::SystemTime;
 
 mod flags;
 mod helpers;
@@ -11,6 +12,7 @@ async fn main() -> anyhow::Result<()> {
     let client = reqwest::Client::new();
     let headers = helpers::make_headers(&flags).await?;
 
+    let rn = SystemTime::now();
     match client
         .request(flags.extract_method()?, &flags.url)
         .body(flags.clone().body.unwrap_or(String::new()))
@@ -28,5 +30,9 @@ async fn main() -> anyhow::Result<()> {
             }
             bail!("{}", e.red())
         }
-    }
+    }?;
+    
+    print!("{}", format!("\n{}", "Time: ".green()).bold());
+    println!("{}", format!("{:?}", SystemTime::now().duration_since(rn).unwrap()).yellow());
+    Ok(())
 }

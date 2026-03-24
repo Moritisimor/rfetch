@@ -66,11 +66,11 @@ pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<
     }
 
     let b = r.text().await?;
-    if b == "null" || b == "" {
+    if b == "" {
         println!("{}", "[ Empty Body ]".yellow());
     }
+    
     println!("{b}");
-
     Ok(())
 }
 
