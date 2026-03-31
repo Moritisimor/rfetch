@@ -6,6 +6,11 @@ use crate::flags::Flags;
 
 pub async fn make_headers(f: &Flags) -> anyhow::Result<reqwest::header::HeaderMap> {
     let mut headers = reqwest::header::HeaderMap::new();
+    headers.append(
+        reqwest::header::USER_AGENT, 
+        reqwest::header::HeaderValue::from_static("rfetch/1.1.0")
+    );
+    
     if f.json {
         let b = match &f.body {
             Some(s) => s,
