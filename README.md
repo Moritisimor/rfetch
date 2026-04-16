@@ -30,7 +30,7 @@ rfetch -u http://localhost:8080/ -m PUT -H myheader:myvalue -H myotherheader:myo
 ### Error while sending request
 ![alt text](screenshots/Error.png)
 
-## Flags:
+## Flags
 | ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```-H``` | ```-o``` | ```--debug``` | 
 |----------|----------|----------|----------|----------|----------|---------------|
 | URL      | JSON     | Body     | Method   | Header   | Output   | Debug/Verbose |
