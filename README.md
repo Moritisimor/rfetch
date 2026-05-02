@@ -31,9 +31,9 @@ rfetch -u http://localhost:8080/ -m PUT -H myheader:myvalue -H myotherheader:myo
 ![Error while sending request](screenshots/Error.png)
 
 ## Flags
-| ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```-H``` | ```-o``` | ```--debug``` | 
-|----------|----------|----------|----------|----------|----------|---------------|
-| URL      | JSON     | Body     | Method   | Header   | Output   | Debug/Verbose |
+| `-u`     | `-j`     | `-b`     | `-m`     | `-H`     | `-o`     | `--debug`     | `--body-only`    | 
+|----------|----------|----------|----------|----------|----------|---------------|------------------|
+| URL      | JSON     | Body     | Method   | Header   | Output   | Debug/Verbose | Only prints body |
 
 ## Compilation
 First, clone this repository
