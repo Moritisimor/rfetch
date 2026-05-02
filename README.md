@@ -22,13 +22,13 @@ rfetch -u http://localhost:8080/ -m PUT -H myheader:myvalue -H myotherheader:myo
 
 ## Output
 ### Successful GET Request
-![alt text](screenshots/Success.png)
+![Success](screenshots/Success.png)
 
 ### Error response from server
-![alt text](screenshots/NotFound.png)
+![Not Found](screenshots/NotFound.png)
 
 ### Error while sending request
-![alt text](screenshots/Error.png)
+![Error while sending request](screenshots/Error.png)
 
 ## Flags
 | ```-u``` | ```-j``` | ```-b``` | ```-m``` | ```-H``` | ```-o``` | ```--debug``` | 
@@ -51,4 +51,4 @@ And finally compile it with cargo
 cargo build -r
 ```
 
-The binary will be in ```rfetch/target/release``` and is called ```rfetch```
+The binary will be in `rfetch/target/release` and is called `rfetch`
