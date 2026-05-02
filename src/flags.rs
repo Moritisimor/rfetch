@@ -24,6 +24,9 @@ pub struct Flags {
 
     #[arg(long, default_value = "false")]
     pub debug: bool,
+
+    #[arg(long, default_value = "false")]
+    pub body_only: bool,
 }
 
 impl Flags {

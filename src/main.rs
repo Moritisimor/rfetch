@@ -31,8 +31,14 @@ async fn main() -> anyhow::Result<()> {
             bail!("{}", e.red())
         }
     }?;
-    
-    print!("{}", format!("\n{}", "Time: ".green()).bold());
-    println!("{}", format!("{:?}", SystemTime::now().duration_since(rn).unwrap()).yellow());
+
+    if !flags.body_only {
+        print!("{}", format!("\n{}", "Time: ".green()).bold());
+        println!(
+            "{}",
+            format!("{:?}", SystemTime::now().duration_since(rn).unwrap()).yellow()
+        );
+    }
+
     Ok(())
 }

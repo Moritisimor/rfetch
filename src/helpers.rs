@@ -7,10 +7,10 @@ use crate::flags::Flags;
 pub async fn make_headers(f: &Flags) -> anyhow::Result<reqwest::header::HeaderMap> {
     let mut headers = reqwest::header::HeaderMap::new();
     headers.append(
-        reqwest::header::USER_AGENT, 
-        reqwest::header::HeaderValue::from_static("rfetch/1.1.0")
+        reqwest::header::USER_AGENT,
+        reqwest::header::HeaderValue::from_static("rfetch/1.1.0"),
     );
-    
+
     if f.json {
         let b = match &f.body {
             Some(s) => s,
@@ -52,16 +52,19 @@ pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<
         return Ok(());
     }
 
-    println!("{}: {}", "Status".green().bold(), r.status().magenta());
-    println!("{}:", "Headers".green().bold());
-    for (k, v) in r.headers() {
-        match v.to_str() {
-            Ok(s) => println!("{}: {}", k.blue(), s.cyan()),
-            Err(_) => continue,
+    if !f.body_only {
+        println!("{}: {}", "Status".green().bold(), r.status().magenta());
+        println!("{}:", "Headers".green().bold());
+        for (k, v) in r.headers() {
+            match v.to_str() {
+                Ok(s) => println!("{}: {}", k.blue(), s.cyan()),
+                Err(_) => continue,
+            }
         }
+
+        println!("\n{}", "Body:".green().bold());
     }
 
-    println!("\n{}", "Body:".green().bold());
     if let Some(o) = &f.output {
         let b = r.bytes().await?;
         write_output_to_file(&b, o)?;
@@ -74,7 +77,7 @@ pub async fn handle_response(r: reqwest::Response, f: &Flags) -> anyhow::Result<
     if b == "" {
         println!("{}", "[ Empty Body ]".yellow());
     }
-    
+
     println!("{b}");
     Ok(())
 }
