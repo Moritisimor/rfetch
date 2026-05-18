@@ -4,7 +4,6 @@ use clap::Parser;
 #[derive(Parser, Clone)]
 #[command(version, about, long_about = None)]
 pub struct Flags {
-    #[arg(short, long)]
     pub url: String,
 
     #[arg(short, long, default_value = "GET")]
