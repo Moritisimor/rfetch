@@ -25,9 +25,11 @@ async fn main() -> anyhow::Result<()> {
             if flags.debug {
                 println!("{:#?}", e)
             }
+            
             if e.is_builder() {
                 bail!("Invalid URL Scheme!".red())
             }
+            
             bail!("{}", e.red())
         }
     }?;

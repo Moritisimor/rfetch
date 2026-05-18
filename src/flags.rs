@@ -6,25 +6,25 @@ use clap::Parser;
 pub struct Flags {
     pub url: String,
 
-    #[arg(short, long, default_value = "GET")]
+    #[arg(short, long, default_value="GET")]
     pub method: String,
 
     #[arg(short, long)]
     pub body: Option<String>,
 
-    #[arg(short = 'o', long = "output")]
+    #[arg(short, long)]
     pub output: Option<String>,
 
-    #[arg(short = 'H', long = "header")]
+    #[arg(short='H', long="header")]
     pub headers: Vec<String>,
 
-    #[arg(short, long, default_value = "false")]
+    #[arg(short, long, default_value_t=false)]
     pub json: bool,
 
-    #[arg(long, default_value = "false")]
+    #[arg(long, default_value_t=false)]
     pub debug: bool,
 
-    #[arg(long, default_value = "false")]
+    #[arg(long, default_value_t=false)]
     pub body_only: bool,
 }
 
