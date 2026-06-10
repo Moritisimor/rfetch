@@ -1,4 +1,3 @@
-use anyhow::Error;
 use clap::Parser;
 
 #[derive(Parser, Clone)]
@@ -6,7 +5,7 @@ use clap::Parser;
 pub struct Flags {
     pub url: String,
 
-    #[arg(short, long, default_value="GET")]
+    #[arg(short, long, default_value = "GET")]
     pub method: String,
 
     #[arg(short, long)]
@@ -15,21 +14,24 @@ pub struct Flags {
     #[arg(short, long)]
     pub output: Option<String>,
 
-    #[arg(short='H', long="header")]
+    #[arg(short = 'H', long = "header")]
     pub headers: Vec<String>,
 
-    #[arg(short, long, default_value_t=false)]
+    #[arg(short = 'Q', long = "query-param")]
+    pub query_params: Vec<String>,
+
+    #[arg(short, long, default_value_t = false)]
     pub json: bool,
 
-    #[arg(long, default_value_t=false)]
+    #[arg(long, default_value_t = false)]
     pub debug: bool,
 
-    #[arg(long, default_value_t=false)]
+    #[arg(long, default_value_t = false)]
     pub body_only: bool,
 }
 
 impl Flags {
-    pub fn extract_method(&self) -> Result<reqwest::Method, Error> {
+    pub fn extract_method(&self) -> anyhow::Result<reqwest::Method> {
         match &*self.method.to_lowercase() {
             "post" => Ok(reqwest::Method::POST),
             "get" => Ok(reqwest::Method::GET),

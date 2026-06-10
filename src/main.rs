@@ -11,12 +11,14 @@ async fn main() -> anyhow::Result<()> {
     let flags = flags::Flags::parse();
     let client = reqwest::Client::new();
     let headers = helpers::make_headers(&flags).await?;
+    let query_params = helpers::make_query_params(&flags).await?;
 
     let rn = SystemTime::now();
     match client
         .request(flags.extract_method()?, &flags.url)
         .body(flags.clone().body.unwrap_or(String::new()))
         .headers(headers)
+        .query(&query_params)
         .send()
         .await
     {
@@ -25,11 +27,11 @@ async fn main() -> anyhow::Result<()> {
             if flags.debug {
                 println!("{:#?}", e)
             }
-            
+
             if e.is_builder() {
                 bail!("Invalid URL Scheme!".red())
             }
-            
+
             bail!("{}", e.red())
         }
     }?;

@@ -31,9 +31,9 @@ rfetch http://localhost:8080/ -m PUT -H myheader:myvalue -H myotherheader:myothe
 ![Error while sending request](screenshots/Error.png)
 
 ## Flags
-| `-j`     | `-b`     | `-m`     | `-H`     | `-o`     | `--debug`     | `--body-only`    | 
-|----------|----------|----------|----------|----------|---------------|------------------|
-| JSON     | Body     | Method   | Header   | Output   | Debug/Verbose | Only prints body |
+| `-j`     | `-b`     | `-m`     | `-H`     | `-o`     | `--debug`     | `--body-only`    | `-Q`                 |
+|----------|----------|----------|----------|----------|---------------|------------------|----------------------|
+| JSON     | Body     | Method   | Header   | Output   | Debug/Verbose | Only prints body | Sets Query parameter |
 
 ## Compilation
 First, clone this repository

@@ -4,11 +4,31 @@ use serde_json::Value;
 
 use crate::flags::Flags;
 
+pub async fn make_query_params(f: &Flags) -> anyhow::Result<Vec<(String, String)>> {
+    let mut params = Vec::<(String, String)>::new();
+
+    for param in &f.query_params {
+        if param.is_empty() {
+            continue;
+        }
+
+        match param.split_once(":") {
+            Some((k, v)) => {
+                params.push((k.to_string(), v.to_string()));
+            }
+
+            None => bail!("Invalid query parameter format (expected 'key:value').".red()),
+        }
+    }
+
+    Ok(params)
+}
+
 pub async fn make_headers(f: &Flags) -> anyhow::Result<reqwest::header::HeaderMap> {
     let mut headers = reqwest::header::HeaderMap::new();
     headers.append(
         reqwest::header::USER_AGENT,
-        reqwest::header::HeaderValue::from_static("rfetch/1.4.0"),
+        reqwest::header::HeaderValue::from_static("rfetch/1.5.0"),
     );
 
     if f.json {
